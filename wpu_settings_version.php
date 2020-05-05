@@ -3,7 +3,7 @@
 /*
 Plugin Name: WPU Settings Version
 Description: Keep a custom DB version of your website
-Version: 0.6.0
+Version: 0.6.1
 Author: Darklg
 Author URI: http://darklg.me/
 License: MIT License
