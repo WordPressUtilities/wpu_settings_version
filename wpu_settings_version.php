@@ -3,9 +3,10 @@
 /*
 Plugin Name: WPU Settings Version
 Description: Keep a custom DB version of your website
+Plugin URI: https://github.com/WordPressUtilities/wpu_settings_version
 Version: 0.6.1
 Author: Darklg
-Author URI: http://darklg.me/
+Author URI: https://darklg.me/
 License: MIT License
 License URI: http://opensource.org/licenses/MIT
 */
