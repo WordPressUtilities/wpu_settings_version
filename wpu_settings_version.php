@@ -4,7 +4,7 @@
 Plugin Name: WPU Settings Version
 Description: Keep a custom DB version of your website
 Plugin URI: https://github.com/WordPressUtilities/wpu_settings_version
-Version: 0.7.0
+Version: 0.8.0
 Author: Darklg
 Author URI: https://darklg.me/
 License: MIT License
@@ -162,11 +162,20 @@ class wpu_settings_version {
                 }
 
                 if (!isset($p['id']) || !is_numeric($p['id'])) {
-                    continue;
+                    $p['id'] = -20;
                 }
 
                 if (!isset($p['type'])) {
-                    $p['type'] = 'page';
+                    $p['type'] = 'custom';
+                }
+                if (!isset($p['url'])) {
+                    $p['url'] = site_url();
+                }
+                if (!isset($p['title'])) {
+                    $p['title'] = 'Link';
+                }
+                if (!isset($p['post_type'])) {
+                    $p['post_type'] = 'page';
                 }
 
                 $page_item = array(
@@ -175,23 +184,37 @@ class wpu_settings_version {
                     'menu-item-status' => 'publish'
                 );
 
+                $page_item['menu-item-object-id'] = $p['id'];
+                $page_item['menu-item-type'] = $p['type'];
+                $page_item['menu-item-title'] = $p['title'];
+                $page_item['menu-item-url'] = $p['url'];
+
                 switch ($p['type']) {
                 case 'taxonomy':
                     $term = get_term($p['id']);
                     $page_item['menu-item-title'] = $term->name;
                     $page_item['menu-item-object-id'] = $term->term_id;
                     $page_item['menu-item-object'] = $term->taxonomy;
-                    $page_item['menu-item-type'] = 'taxonomy';
                     $page_item['menu-item-url'] = get_term_link($term->term_id);
+                    break;
+
+                case 'custom':
+                    $page_item['menu-item-object'] = 'custom';
+                    break;
+
+                case 'post_type_archive':
+                    $post_type = get_post_type_object($p['post_type']);
+                    $page_item['menu-item-title'] = $post_type->label;
+                    $page_item['menu-item-object'] = $p['post_type'];
+                    $page_item['menu-item-url'] = get_post_type_archive_link($p['post_type']);
                     break;
 
                 default:
                     $page_item['menu-item-title'] = get_the_title($p['id']);
-                    $page_item['menu-item-object-id'] = $p['id'];
                     $page_item['menu-item-object'] = 'page';
-                    $page_item['menu-item-type'] = 'post_type';
                     $page_item['menu-item-url'] = get_page_link($p['id']);
                 }
+                error_log(json_encode($page_item));
 
                 // Set up default menu items
                 wp_update_nav_menu_item($menu_id, 0, $page_item);
