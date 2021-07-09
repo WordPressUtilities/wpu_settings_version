@@ -4,7 +4,7 @@
 Plugin Name: WPU Settings Version
 Description: Keep a custom DB version of your website
 Plugin URI: https://github.com/WordPressUtilities/wpu_settings_version
-Version: 0.8.1
+Version: 0.8.2
 Author: Darklg
 Author URI: https://darklg.me/
 License: MIT License
@@ -218,7 +218,6 @@ class wpu_settings_version {
                     $page_item['menu-item-object'] = $p['post_type'];
                     $page_item['menu-item-url'] = get_page_link($p['id']);
                 }
-                error_log(json_encode($page_item));
 
                 // Set up default menu items
                 wp_update_nav_menu_item($menu_id, 0, $page_item);
