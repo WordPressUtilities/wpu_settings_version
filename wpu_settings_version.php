@@ -4,7 +4,7 @@
 Plugin Name: WPU Settings Version
 Description: Keep a custom DB version of your website
 Plugin URI: https://github.com/WordPressUtilities/wpu_settings_version
-Version: 0.9.0
+Version: 0.10.0
 Author: Darklg
 Author URI: https://darklg.me/
 License: MIT License
@@ -64,7 +64,7 @@ class wpu_settings_version {
      */
     public function get_actions() {
         $actions = apply_filters('wpusettingsversion_actions', array());
-        arsort($actions);
+        ksort($actions);
         if (!is_array($actions)) {
             $actions = array();
         }
