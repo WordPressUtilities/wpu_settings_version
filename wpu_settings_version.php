@@ -1,14 +1,17 @@
 <?php
-
 /*
 Plugin Name: WPU Settings Version
 Description: Keep a custom DB version of your website
 Plugin URI: https://github.com/WordPressUtilities/wpu_settings_version
-Version: 0.10.2
+Update URI: https://github.com/WordPressUtilities/wpu_settings_version
+Version: 0.11.0
 Author: Darklg
 Author URI: https://darklg.me/
+Text Domain: wpu_settings_version
+Requires at least: 6.0
+Requires PHP: 8.0
 License: MIT License
-License URI: http://opensource.org/licenses/MIT
+License URI: https://opensource.org/licenses/MIT
 */
 
 class wpu_settings_version {
@@ -211,9 +214,11 @@ class wpu_settings_version {
 
                 case 'post_type_archive':
                     $post_type = get_post_type_object($p['post_type']);
-                    $page_item['menu-item-title'] = $post_type->label;
-                    $page_item['menu-item-object'] = $p['post_type'];
-                    $page_item['menu-item-url'] = get_post_type_archive_link($p['post_type']);
+                    if ($post_type) {
+                        $page_item['menu-item-title'] = $post_type->label;
+                        $page_item['menu-item-object'] = $p['post_type'];
+                        $page_item['menu-item-url'] = get_post_type_archive_link($p['post_type']);
+                    }
                     break;
 
                 default:
