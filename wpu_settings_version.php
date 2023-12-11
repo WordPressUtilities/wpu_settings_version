@@ -4,7 +4,7 @@ Plugin Name: WPU Settings Version
 Description: Keep a custom DB version of your website
 Plugin URI: https://github.com/WordPressUtilities/wpu_settings_version
 Update URI: https://github.com/WordPressUtilities/wpu_settings_version
-Version: 0.11.0
+Version: 0.12.0
 Author: Darklg
 Author URI: https://darklg.me/
 Text Domain: wpu_settings_version
@@ -243,6 +243,19 @@ class wpu_settings_version {
 
         update_option($opt_id, $theme_mods);
 
+    }
+
+    /* ----------------------------------------------------------
+      Add args to an option
+    ---------------------------------------------------------- */
+
+    function add_args_to_option($option_id, $args = array()) {
+        $opt = get_option($option_id);
+        if (!is_array($opt)) {
+            $opt = array();
+        }
+        $opt = array_merge($opt, $args);
+        update_option($option_id, $opt);
     }
 
     /* ----------------------------------------------------------
