@@ -4,7 +4,7 @@ Plugin Name: WPU Settings Version
 Description: Keep a custom DB version of your website
 Plugin URI: https://github.com/WordPressUtilities/wpu_settings_version
 Update URI: https://github.com/WordPressUtilities/wpu_settings_version
-Version: 0.12.0
+Version: 0.13.0
 Author: Darklg
 Author URI: https://darklg.me/
 Text Domain: wpu_settings_version
@@ -284,6 +284,46 @@ class wpu_settings_version {
 
         /* Update site value */
         update_option('site_icon', $att);
+    }
+
+    /* ----------------------------------------------------------
+      Widgets
+    ---------------------------------------------------------- */
+
+    /*
+    $this->insert_preconfigured_widget(array(
+        'sidebar-name' => 'avada-blog-sidebar',
+        'widget_id' => 'wpunewsletter_form',
+        'instance' => array(
+            'title' => 'Newsletter'
+        )
+    ));
+    */
+
+    function insert_preconfigured_widget($args = array()) {
+
+        $widget_type = 'widget_' . $args['widget_id'];
+
+        // Get sidebar & widgets
+        $widget_obj = get_option($widget_type);
+        if (!is_array($widget_obj)) {
+            $widget_obj = array();
+        }
+
+        /* Setup widget position */
+        $widget_id = 1;
+        while (isset($widget_obj[$widget_id])) {
+            $widget_id++;
+        }
+
+        // Save into widget instances
+        $widget_obj[$widget_id] = $args['instance'];
+        update_option($widget_type, $widget_obj);
+
+        // Add this widget to sidebar
+        $sidebars_widgets = get_option('sidebars_widgets');
+        $sidebars_widgets[$args['sidebar-name']][] = $args['widget_id'] . '-' . $widget_id;
+        update_option('sidebars_widgets', $sidebars_widgets);
     }
 
     /* ----------------------------------------------------------
