@@ -4,7 +4,7 @@ Plugin Name: WPU Settings Version
 Description: Keep a custom DB version of your website
 Plugin URI: https://github.com/WordPressUtilities/wpu_settings_version
 Update URI: https://github.com/WordPressUtilities/wpu_settings_version
-Version: 0.14.0
+Version: 0.14.1
 Author: Darklg
 Author URI: https://darklg.me/
 Text Domain: wpu_settings_version
@@ -353,16 +353,7 @@ if (defined('WP_CLI')) {
         $actions = $wpu_settings_version->get_actions();
         $launched_action = false;
 
-        if (isset($args[0])) {
-
-            /* Help */
-            if($args[0] == 'help'){
-                foreach ($actions as $v => $action) {
-                    WP_CLI::line('- ' . $action[1]);
-                }
-                return;
-            }
-
+        if (isset($args[0]) && $args[0]) {
             /* Single action specified */
             foreach ($actions as $v => $action) {
                 if ($action[1] != $args[0]) {
@@ -373,7 +364,14 @@ if (defined('WP_CLI')) {
                 $launched_action = true;
             }
 
-        /* All actions */
+            if (!$launched_action) {
+                foreach ($actions as $v => $action) {
+                    WP_CLI::line('- ' . $action[1]);
+                }
+                return;
+            }
+
+            /* All actions */
         } else {
             foreach ($actions as $v => $action) {
                 WP_CLI::log('Running: ' . $action[1]);
@@ -381,10 +379,9 @@ if (defined('WP_CLI')) {
                 $launched_action = true;
             }
         }
-        if($launched_action){
+        if ($launched_action) {
             WP_CLI::success('all actions have been triggered.');
-        }
-        else {
+        } else {
             WP_CLI::error('no actions have been triggered.');
         }
     }, array(
